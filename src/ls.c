@@ -139,6 +139,14 @@
    Subtracting doesn't always work, due to overflow.  */
 #define longdiff(a, b) ((a) < (b) ? -1 : (a) > (b))
 
+#define case_LS_KDR_GETOPT_VERSION_CHAR(Program_name, Authors)			\
+  case GETOPT_VERSION_CHAR:						\
+    version_etc (stdout, Program_name, PACKAGE_NAME, Version, Authors,	\
+                 (char *) NULL);					\
+    fprintf(stdout, "Modified & Compiled by Jason.HW.Kang, aka KangDroid.\n");\
+    exit (EXIT_SUCCESS);						\
+    break;
+
 /* Unix-based readdir implementations have historically returned a dirent.d_ino
    value that is sometimes not equal to the stat-obtained st_ino value for
    that same entry.  This error occurs for a readdir entry that refers
@@ -1642,6 +1650,9 @@ main (int argc, char **argv)
 
   current_time.tv_sec = TYPE_MINIMUM (time_t);
   current_time.tv_nsec = -1;
+  #if defined(__APPLE__)
+  print_with_color = true;
+  #endif
 
   i = decode_switches (argc, argv);
 
@@ -2285,7 +2296,7 @@ decode_switches (int argc, char **argv)
 
         case_GETOPT_HELP_CHAR;
 
-        case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);
+        case_LS_KDR_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);
 
         default:
           usage (LS_FAILURE);
